@@ -1,0 +1,72 @@
+{
+  "name": "one-ai",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && electron-builder",
+    "build:mac": "vite build && electron-builder --mac",
+    "build:win": "vite build && electron-builder --win",
+    "build:all": "vite build && electron-builder --mac --win",
+    "preview": "vite preview",
+    "generate-icons": "electron-icon-builder --input=./public/one.png --output=build --flatten"
+  },
+  "build": {
+    "appId": "com.example.ONEAI",
+    "productName": "ONEAI",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
+    "mac": {
+      "icon": "public/one.icns",
+      "identity": null,
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "icon": "public/one.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ONEAI"
+    }
+  },
+  "dependencies": {
+    "pinia": "^3.0.4",
+    "vue": "^3.4.21",
+    "vue-resizable-panels": "^0.0.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "electron": "^30.5.1",
+    "electron-builder": "^24.13.3",
+    "electron-icon-builder": "^2.0.1",
+    "sass": "^1.93.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.6",
+    "vite-plugin-electron": "^0.28.6",
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vue-tsc": "^2.0.26"
+  },
+  "main": "dist-electron/main.js"
+}
