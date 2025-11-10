@@ -7,7 +7,6 @@ export interface App {
   url: string;
   logo: string;
   bodered?: boolean;
-  style?: any;
 }
 
 export interface Tab {
@@ -21,7 +20,7 @@ export interface SplitPane {
   type: "single" | "split";
   direction?: "horizontal" | "vertical";
   children?: SplitPane[];
-  tabId?: string; // 如果是 single 类型，关联的 tab id
+  tabId?: string | null; // 如果是 single 类型，关联的 tab id
 }
 
 // 应用搜索配置接口
@@ -72,8 +71,9 @@ export const useAppStore = defineStore("app", {
       [
         "doubao",
         {
-          inputSelector: 'textarea.semi-input-textarea, textarea[placeholder*="发消息"]',
-          submitMethod: "enter",  // 使用回车键提交
+          inputSelector:
+            'textarea.semi-input-textarea, textarea[placeholder*="发消息"]',
+          submitMethod: "enter", // 使用回车键提交
         },
       ],
       // 通义千问配置
@@ -81,15 +81,16 @@ export const useAppStore = defineStore("app", {
         "qianwen",
         {
           inputSelector: 'textarea, textarea[placeholder*="通义"]',
-          submitMethod: "enter",  // 使用回车键提交
+          submitMethod: "enter", // 使用回车键提交
         },
       ],
       // DeepSeek 配置
       [
         "deepseek",
         {
-          inputSelector: 'textarea, textarea[placeholder*="DeepSeek"], input[type="text"]',
-          submitMethod: "enter",  // 使用回车键提交
+          inputSelector:
+            'textarea, textarea[placeholder*="DeepSeek"], input[type="text"]',
+          submitMethod: "enter", // 使用回车键提交
         },
       ],
       // MiniMax 配置
@@ -97,16 +98,18 @@ export const useAppStore = defineStore("app", {
         "minimax",
         {
           inputSelector: 'textarea, textarea[placeholder*="MiniMax"]',
-          submitMethod: "enter",  // 使用回车键提交
+          submitMethod: "enter", // 使用回车键提交
         },
       ],
       // Stepfun 配置
       [
         "stepfun",
         {
-          inputSelector: 'textarea.Publisher_textarea__pMX9t:not([disabled]), textarea[placeholder*="可以问我"]',
-          submitSelector: 'button.w-8.h-8.rounded-lg:has(svg.custom-icon-send-outline), button.w-8.h-8.rounded-lg.bg-content-primary',
-          submitMethod: "click",  // 使用点击按钮提交
+          inputSelector:
+            'textarea.Publisher_textarea__pMX9t:not([disabled]), textarea[placeholder*="可以问我"]',
+          submitSelector:
+            "button.w-8.h-8.rounded-lg:has(svg.custom-icon-send-outline), button.w-8.h-8.rounded-lg.bg-content-primary",
+          submitMethod: "click", // 使用点击按钮提交
         },
       ],
       // 通用配置（默认）
@@ -122,10 +125,6 @@ export const useAppStore = defineStore("app", {
   }),
   getters: {
     getTabs: (state) => state.tabs,
-    getActiveTab: (state) => {
-      return state.tabs.find((tab) => tab.id === state.activeTabId);
-    },
-    getActiveTabId: (state) => state.activeTabId,
     getSplitLayout: (state) => state.splitLayout,
   },
   actions: {
@@ -186,20 +185,6 @@ export const useAppStore = defineStore("app", {
           // 这里不需要额外操作
         }
       }
-    },
-    removeOtherTabs(tabId: string) {
-      const tab = this.tabs.find((t) => t.id === tabId);
-      if (!tab) return;
-
-      this.tabs = [tab];
-      this.activeTabId = tabId;
-
-      // 重置布局为单个
-      this.splitLayout = {
-        id: "root",
-        type: "single",
-        tabId: tabId,
-      };
     },
     switchTab(tabId: string) {
       if (this.tabs.find((t) => t.id === tabId)) {
@@ -379,13 +364,12 @@ export const useAppStore = defineStore("app", {
           .sort((a, b) => b - a); // 从大到小排序，从后往前删除
 
         // 记录当前激活的 tab 是否会被删除
-        const activeTabWillBeRemoved = tabIdsToRemove.includes(
-          this.activeTabId
-        );
+        const activeTabWillBeRemoved =
+          this.activeTabId !== null &&
+          tabIdsToRemove.includes(this.activeTabId);
 
         // 从后往前删除 tab
         for (const tabIndex of tabIndices) {
-          const tabId = this.tabs[tabIndex].id;
           this.tabs.splice(tabIndex, 1);
         }
 
@@ -477,8 +461,13 @@ export const useAppStore = defineStore("app", {
     getAppSearchConfig(appId: string): AppSearchConfig {
       const lowerAppId = appId.toLowerCase();
       console.log("🔍 [appStore] 查找配置，appId:", lowerAppId);
-      console.log("📋 [appStore] 所有可用配置:", Array.from(this.appSearchConfigs.keys()));
-      const config = this.appSearchConfigs.get(lowerAppId) || this.appSearchConfigs.get("default")!;
+      console.log(
+        "📋 [appStore] 所有可用配置:",
+        Array.from(this.appSearchConfigs.keys())
+      );
+      const config =
+        this.appSearchConfigs.get(lowerAppId) ||
+        this.appSearchConfigs.get("default")!;
       console.log("✅ [appStore] 找到的配置:", config);
       return config;
     },
