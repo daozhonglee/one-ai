@@ -1,8 +1,8 @@
 ## 启动
 
 ```shell
-npm install
-npm run dev
+yarn
+yarn dev
 ```
 
 ## 打包
@@ -10,5 +10,9 @@ npm run dev
 打包到 release 目录
 
 ```shell
-npm run build
+yarn build
 ```
+
+## 适配
+
+适配 1080\*1920 的屏幕，注意是长屏

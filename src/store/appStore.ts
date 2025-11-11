@@ -43,9 +43,9 @@ export const useAppStore = defineStore("app", {
     appSearchConfigs: new Map<string, AppSearchConfig>([
       // ChatGPT 配置
       [
-        "chatgpt",
+        "openai",
         {
-          inputSelector: 'textarea, textarea[data-id="root"], #prompt-textarea',
+          inputSelector: `div[contenteditable='true']`,
           submitSelector:
             'button[data-testid="send-button"], button[aria-label*="Send"]',
           submitMethod: "click",
@@ -91,6 +91,19 @@ export const useAppStore = defineStore("app", {
           inputSelector:
             'textarea, textarea[placeholder*="DeepSeek"], input[type="text"]',
           submitMethod: "enter", // 使用回车键提交
+        },
+      ],
+      // Gemini 配置
+      [
+        "gemini",
+        {
+          // Gemini 聊天输入通常是 contenteditable 或 role="textbox" 的区域
+          inputSelector:
+            'div[contenteditable="true"], div[role="textbox"], textarea',
+          // Gemini 通常回车即可发送，Shift+Enter 换行
+          submitSelector:
+            'button[aria-label*="Send"], button[aria-label*="发送"], button[aria-label*="提交"], div[role="button"][aria-label*="Send"]',
+          submitMethod: "enter",
         },
       ],
       // MiniMax 配置

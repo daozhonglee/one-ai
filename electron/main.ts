@@ -39,7 +39,7 @@ function createWindow() {
     },
   });
 
-  // win.webContents.openDevTools({ mode: "detach" });
+  win.webContents.openDevTools({ mode: "detach" });
   // win.maximize();
 
   // Test active push message to Renderer-process.

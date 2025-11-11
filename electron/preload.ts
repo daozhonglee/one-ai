@@ -24,20 +24,3 @@ contextBridge.exposeInMainWorld("ipcRenderer", {
   // You can expose other APTs you need here.
   // ...
 });
-
-window.addEventListener("DOMContentLoaded", () => {
-  ipcRenderer.on("send-message", (_, text) => {
-    // 向 chatgpt 页面注入脚本
-    const script = `
-      const input = document.querySelector('textarea');
-      if (input) {
-        input.value = ${JSON.stringify(text)};
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-        const sendBtn = document.querySelector('button[data-testid="send-button"]');
-        if (sendBtn) sendBtn.click();
-      }
-    `;
-    const exec = new Function(script);
-    exec();
-  });
-});
