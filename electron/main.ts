@@ -39,7 +39,10 @@ function createWindow() {
     },
   });
 
-  win.webContents.openDevTools({ mode: "detach" });
+  // 仅开发环境打开调试工具
+  if (VITE_DEV_SERVER_URL) {
+    win.webContents.openDevTools({ mode: "detach" });
+  }
   // win.maximize();
 
   // Test active push message to Renderer-process.
