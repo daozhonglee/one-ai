@@ -391,6 +391,46 @@ const generateSearchScript = (
           input.dispatchEvent(enterEvent3);
         }
         
+        // OpenAI/ChatGPT: 等待会话 ID 出现（URL 会变为 /c/<id>）
+        const isOpenAI = /chatgpt\\.com|openai\\.com/i.test(location.hostname);
+        let conversationId = null;
+        let finalUrl = window.location.href;
+        
+        if (isOpenAI) {
+          console.log('🔄 OpenAI 检测：等待会话 ID 出现...');
+          const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+          // 使用字符串构造正则，避免转义问题
+          const patternStr = '/c/([\\\\w-]+)';
+          const pattern = new RegExp(patternStr);
+          
+          // 先检查当前 URL 是否已有会话 ID
+          let match = location.pathname.match(pattern);
+          if (match) {
+            conversationId = match[1];
+            finalUrl = window.location.href;
+            console.log('✅ OpenAI 会话 ID (当前):', conversationId);
+          } else {
+            // 等待 URL 更新（最多等待 10 秒）
+            const startWait = Date.now();
+            const maxWait = 10000;
+            
+            while (Date.now() - startWait < maxWait) {
+              await sleep(200);
+              match = location.pathname.match(pattern);
+              if (match) {
+                conversationId = match[1];
+                finalUrl = window.location.href;
+                console.log('✅ OpenAI 会话 ID (等待后):', conversationId, 'URL:', finalUrl);
+                break;
+              }
+            }
+            
+            if (!conversationId) {
+              console.warn('⌛ OpenAI: 未在限定时间内获取到会话 ID，当前 URL:', window.location.href);
+            }
+          }
+        }
+        
         const endTime = Date.now();
         const result = {
           success: true,
@@ -398,7 +438,8 @@ const generateSearchScript = (
           executionTime: endTime - startTime,
           foundInput: !!input,
           inputType: input ? (input.tagName + '.' + input.className) : null,
-          url: window.location.href,
+          url: finalUrl,
+          conversationId: conversationId,
           submitMethod: ${JSON.stringify(submitMethod)},
           submitAttempted: ${
             submitMethod === "click" && submitSelector ? "true" : "false"
