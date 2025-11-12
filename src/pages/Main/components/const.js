@@ -83,7 +83,7 @@ export const AIAppList = [
   {
     id: "gemini",
     name: "Gemini",
-    url: "https://gemini.google.com/",
+    url: "https://gemini.google.com/app",
     logo: GeminiAppLogo,
   },
   {
@@ -93,5 +93,4 @@ export const AIAppList = [
     url: "https://grok.com",
     bodered: true,
   },
- 
 ];

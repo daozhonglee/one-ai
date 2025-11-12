@@ -173,16 +173,42 @@ const generateSearchScript = (
           // 对于 contenteditable 元素，使用多种方式尝试设置内容
           console.log('🔧 开始设置 contenteditable 内容...');
           
-          // 方法1: 直接设置 innerHTML（最简单直接）
-          input.innerHTML = '<p>' + ${escapedText} + '</p>';
-          console.log('方法1 - innerHTML 设置后:', input.innerHTML);
+          const text = ${escapedText};
           
-          // 如果方法1失败（内容仍为空），尝试方法2
+          // 方法1: 使用 textContent（避免 Trusted Types 限制）
+          try {
+            input.textContent = text;
+            console.log('方法1 - textContent 设置后:', input.textContent);
+          } catch (e) {
+            console.warn('⚠️ textContent 设置失败:', e);
+          }
+          
+          // 方法2: 如果 textContent 失败，尝试使用 DOM 操作
           if (!input.textContent || input.textContent.trim() === '') {
-            console.log('方法1失败，尝试方法2...');
-            // 方法2: 使用 textContent
-            input.textContent = ${escapedText};
-            console.log('方法2 - textContent 设置后:', input.textContent);
+            console.log('方法1失败，尝试方法2 - DOM 操作...');
+            try {
+              // 清空内容
+              while (input.firstChild) {
+                input.removeChild(input.firstChild);
+              }
+              // 创建文本节点并添加
+              const textNode = document.createTextNode(text);
+              input.appendChild(textNode);
+              console.log('方法2 - DOM 操作后:', input.textContent);
+            } catch (e) {
+              console.warn('⚠️ DOM 操作失败:', e);
+            }
+          }
+          
+          // 方法3: 如果还是失败，尝试使用 innerText
+          if (!input.textContent || input.textContent.trim() === '') {
+            console.log('方法2失败，尝试方法3 - innerText...');
+            try {
+              input.innerText = text;
+              console.log('方法3 - innerText 设置后:', input.innerText);
+            } catch (e) {
+              console.warn('⚠️ innerText 设置失败:', e);
+            }
           }
           
           // 聚焦输入框
@@ -208,12 +234,12 @@ const generateSearchScript = (
             input.dispatchEvent(new InputEvent('input', { 
               bubbles: true, 
               cancelable: true,
-              data: ${escapedText}
+              data: text
             }));
             console.log('✅ 已触发 input 事件');
           }, 50);
           
-          console.log('✅ 最终 contenteditable 内容:', input.innerHTML);
+          console.log('✅ 最终 contenteditable 内容:', input.textContent || input.innerText);
         }
 
         // 提交搜索
@@ -374,7 +400,9 @@ const generateSearchScript = (
           inputType: input ? (input.tagName + '.' + input.className) : null,
           url: window.location.href,
           submitMethod: ${JSON.stringify(submitMethod)},
-          submitAttempted: ${submitMethod === "click" && submitSelector ? "true" : "false"}
+          submitAttempted: ${
+            submitMethod === "click" && submitSelector ? "true" : "false"
+          }
         };
         console.log('✅ 搜索脚本执行完成:', result);
         return result;
