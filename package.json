@@ -1,7 +1,7 @@
 {
   "name": "one-ai",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "cdev": "node scripts/clean-dev.mjs",
@@ -30,11 +30,17 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         },
         {
           "target": "zip",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "category": "public.app-category.productivity"
@@ -61,6 +67,7 @@
     }
   },
   "dependencies": {
+    "7zip-bin": "^5.2.0",
     "dayjs": "^1.11.19",
     "lodash-es": "^4.17.21",
     "naive-ui": "^2.43.1",

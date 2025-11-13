@@ -59,13 +59,13 @@
 > 💡 请前往 [Releases 页面](https://github.com/daozhonglee/one-ai/releases/latest) 下载最新版本
 
 **macOS**
-- [Apple Silicon (M1/M2/M3)](https://github.com/daozhonglee/one-ai/releases/download/v1.0.0/ONEAI-1.0.0-arm64.dmg)
-- [Intel 芯片](https://github.com/daozhonglee/one-ai/releases/download/v1.0.0/ONEAI-1.0.0.dmg)
-- [ZIP 格式 (Apple Silicon)](https://github.com/daozhonglee/one-ai/releases/download/v1.0.0/ONEAI-1.0.0-arm64-mac.zip)
-- [ZIP 格式 (Intel)](https://github.com/daozhonglee/one-ai/releases/download/v1.0.0/ONEAI-1.0.0-mac.zip)
+- [Apple Silicon (M1/M2/M3)](https://github.com/daozhonglee/one-ai/releases/download/v1.0.1/ONEAI-1.0.1-arm64.dmg)
+- [Intel 芯片](https://github.com/daozhonglee/one-ai/releases/download/v1.0.1/ONEAI-1.0.1.dmg)
+- [ZIP 格式 (Apple Silicon)](https://github.com/daozhonglee/one-ai/releases/download/v1.0.1/ONEAI-1.0.1-arm64-mac.zip)
+- [ZIP 格式 (Intel)](https://github.com/daozhonglee/one-ai/releases/download/v1.0.1/ONEAI-1.0.1-mac.zip)
 
 **Windows**
-- [Windows 10/11 (64位)](https://github.com/daozhonglee/one-ai/releases/download/v1.0.0/ONEAI%20Setup%201.0.0.exe)
+- [Windows 10/11 (支持 x64/ia32/arm64)](https://github.com/daozhonglee/one-ai/releases/download/v1.0.1/ONEAI%20Setup%201.0.1.exe)
 
 ## 🔧 开发
 
