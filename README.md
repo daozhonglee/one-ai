@@ -26,7 +26,7 @@
 
 ## 📸 预览
 
- <img src="doc/images/records.gif" alt="ONE AI 演示" width="70%"> 
+![预览图](./doc/images/records.gif)
 
 ## 🎯 支持的 AI 应用
 
