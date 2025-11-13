@@ -11,6 +11,7 @@ import DeepSeekProviderLogo from "@/assets/providers/deepseek.png?url";
 import OpenAiProviderLogo from "@/assets/providers/openai.png?url";
 import SiliconFlowProviderLogo from "@/assets/providers/silicon.png?url";
 import ZhipuProviderLogo from "@/assets/providers/zhipu.png?url";
+import LmArenaAppLogo from "@/assets/apps/lmarena.png?url";
 
 export const AIAppList = [
   {
@@ -91,6 +92,13 @@ export const AIAppList = [
     name: "Grok",
     logo: GrokAppLogo,
     url: "https://grok.com",
+    bodered: true,
+  },
+  {
+    id: "lmarena",
+    name: "lmarena",
+    logo: LmArenaAppLogo,
+    url: "https://lmarena.ai",
     bodered: true,
   },
 ];
